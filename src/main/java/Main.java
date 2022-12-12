@@ -1,15 +1,16 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws NotFoundArithmeticalOperation {
+    public static void main(String[] args) throws NotFoundArithmeticalOperationException {
         Scanner console = new Scanner(System.in);
         System.out.println("Введите выражение:");
         String expression = console.nextLine();
+        System.out.println("Результат:");
         System.out.println(calc(expression));
         console.close();
     }
 
-    public static String calc(String expression) throws NotFoundArithmeticalOperation {
+    public static String calc(String expression) throws NotFoundArithmeticalOperationException {
         String[] arrElements = divisionIntoOperands(expression);
         String operator = arrElements[0];
         String a = arrElements[1];
@@ -31,14 +32,14 @@ public class Main {
         };
     }
 
-    private static String[] divisionIntoOperands(String input) throws NotFoundArithmeticalOperation {
+    private static String[] divisionIntoOperands(String input) throws NotFoundArithmeticalOperationException {
         String expressionWithoutWhiteSpace = input.replaceAll("\\s", "");
 
         String[] pair = expressionWithoutWhiteSpace.split("[+*/-]");
         if (pair.length == 1)
-            throw new NotFoundArithmeticalOperation("Строка не является математической операцией, либо введен неверный оператор!");
+            throw new NotFoundArithmeticalOperationException("Строка не является математической операцией, либо введен неверный оператор!");
         if (pair.length != 2)
-            throw new NotFoundArithmeticalOperation("Формат математической операции не удовлетворяет заданию - два операнда и один оператор(+,-,/,*)!");
+            throw new NotFoundArithmeticalOperationException("Формат математической операции не удовлетворяет заданию - два операнда и один оператор(+,-,/,*)!");
         String operator = expressionWithoutWhiteSpace.substring(pair[0].length(),
                 expressionWithoutWhiteSpace.length() - pair[1].length());
         String elementA = pair[0];
@@ -56,9 +57,9 @@ public class Main {
             }
         }
         if (!elementAFound)
-            throw new NotFoundArithmeticalOperation("Введенное значение не удовлетворяет условию задачи!");
+            throw new NotFoundArithmeticalOperationException("Введенное значение не удовлетворяет условию задачи!");
         if (!elementBFound)
-            throw new NotFoundArithmeticalOperation("Введенное значение не удовлетворяет условию задачи!");
+            throw new NotFoundArithmeticalOperationException("Введенное значение не удовлетворяет условию задачи!");
 
         return new String[]{operator, elementA, elementB};
     }
